@@ -1,13 +1,22 @@
-import React, { useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Row, Col, Input, Select } from 'antd';
 import * as cheerio from 'cheerio';
 import * as axios from 'axios';
+import FirebaseContext from "../firebase/context";
 
 const { Option } = Select;
 
 const Words = () => {
     const [translations, setTranslations] = useState(null);
     const [selectedWords, setSelectedWords] = useState([]);
+    const [categories, setCategories] = useState(null);
+    const firebase = useContext(FirebaseContext);
+
+    useEffect(() => {
+        firebase.getCategories().then((categories) => {
+            setCategories(categories);
+        });
+    }, [firebase]);
 
     const translateWord = ({ target: { value } }) => {
         axios.get(`https://pl.bab.la/slownik/angielski-polski/${value}`).then((response) => {
@@ -22,8 +31,8 @@ const Words = () => {
 
     return (
         <Row style={{ flexWrap: 'nowrap' }}>
-            <Col span={8}><Input placeholder="Enter a word" onBlur={translateWord}/></Col>
-            <Col span={8} offset={2}>
+            <Col><Input placeholder="Enter a word" onBlur={translateWord}/></Col>
+            <Col offset={2}>
                 <Select mode="tags"
                         placeholder="Translations"
                         style={{ width: 250 }}
@@ -33,13 +42,12 @@ const Words = () => {
                 >
                     {translations && translations.map(option => <Option key={option} value={option}>{option}</Option>)}
                 </Select></Col>
-            <Col span={8} offset={2}>
-                <Select mode="multiple"
+            <Col offset={2}>
+                <Select
                         style={{ width: 250 }}
-                        value={selectedWords}
-                        onChange={setSelectedWords}
+                        placeholder="Category"
                 >
-                    {translations && translations.map(option => <Option key={option} value={option}>{option}</Option>)}
+                    {categories && categories.map(({id, name}) => <Option key={id} value={name}>{name}</Option>)}
                 </Select>
             </Col>
         </Row>
