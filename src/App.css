@@ -3,6 +3,7 @@
 .App {
   display: flex;
   justify-content: center;
+  flex-direction: column;
   text-align: center;
   margin-top: 3em;
 }
@@ -27,15 +28,31 @@
   color: white;
 }
 
-.App-link {
-  color: #61dafb;
+.card {
+  font-size: 35px;
+  cursor: pointer;
+  transition: font-size .2s, color .2s;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.card:hover {
+  font-size: 40px;
+  color: #3f8600;
+}
+
+.card div {
+  font-size: 18px;
+  margin-top: 10px;
+}
+
+.home {
+  font-size: 28px;
+  position: fixed;
+  left: 8px;
+  top: 8px;
+  transition: font-size .2s, color .2s;
+}
+
+.home:hover {
+  font-size: 32px;
+  color: #3f8600;
 }
