@@ -3,15 +3,18 @@ import {Statistic, Card as AntCard, Row, Col, Button} from 'antd';
 import { CheckCircleOutlined, CloseCircleOutlined } from '@ant-design/icons';
 import Card from "./Card";
 
-export default () => <Card title="Pies" style={{ width: 500, height: 400 }}>
+export default ({ correctAnswers, tryAgain }) => <Card title="Pies" style={{ width: 500, height: 400 }}>
     <div className="site-statistic-demo-card">
         <Row gutter={16}>
             <Col span={12}>
                 <AntCard>
                     <Statistic
                         title="Correct"
-                        value={93}
-                        suffix="/ 100"
+                        value={correctAnswers.reduce((acc, curr) => {
+                            if(curr) return acc+1
+                            return acc
+                        }, 0)}
+                        suffix={` / ${correctAnswers.length}`}
                         valueStyle={{ color: '#3f8600' }}
                         prefix={<CheckCircleOutlined />}
                     />
@@ -21,8 +24,11 @@ export default () => <Card title="Pies" style={{ width: 500, height: 400 }}>
                 <AntCard>
                     <Statistic
                         title="Wrong"
-                        value={7}
-                        suffix="/ 100"
+                        value={correctAnswers.reduce((acc, curr) => {
+                            if(!curr) return acc+1
+                            return acc
+                        }, 0)}
+                        suffix={` / ${correctAnswers.length}`}
                         valueStyle={{ color: '#cf1322' }}
                         prefix={<CloseCircleOutlined />}
                     />
@@ -36,7 +42,7 @@ export default () => <Card title="Pies" style={{ width: 500, height: 400 }}>
             style={{
                 marginTop: 10
             }}
-            onClick={() => {}}
+            onClick={tryAgain}
         >
             Try Again
         </Button>
