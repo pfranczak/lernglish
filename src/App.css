@@ -57,3 +57,19 @@
   font-size: 32px;
   color: #3f8600;
 }
+
+.ant-divider-vertical {
+  height: 10em;
+  top: -1em;
+  margin: 0 2em;
+}
+
+.ant-spin-dot-spin {
+  position: absolute;
+  top: 50%;
+}
+
+.ant-spin-dot-spin i.ant-spin-dot-item {
+  width: 25px;
+  height: 25px;
+}
