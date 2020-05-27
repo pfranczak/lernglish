@@ -2,7 +2,7 @@ import React, { useContext, useState, useEffect } from 'react';
 import { Row, Col, Input, Select } from 'antd';
 import * as cheerio from 'cheerio';
 import * as axios from 'axios';
-import FirebaseContext from "../firebase/context";
+import FirebaseContext from "../../firebase/context";
 
 const { Option } = Select;
 

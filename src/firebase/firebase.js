@@ -1,4 +1,5 @@
 import firebase from 'firebase';
+import "firebase/auth";
 
 const config = {
     apiKey: process.env.REACT_APP_API_KEY,
@@ -13,7 +14,6 @@ const config = {
 
 class Firebase {
     constructor() {
-        console.log(config)
         this.app = firebase.initializeApp(config);
         this.db = this.app.firestore();
     }
@@ -32,7 +32,6 @@ class Firebase {
         return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id}));
     };
 
-
     createQuestion = async (word, translations, categoryId) => {
         await this.db.collection('questions').doc().set({
             word,
@@ -42,6 +41,30 @@ class Firebase {
             correctAnswers: 0,
         })
     };
+
+    signUp = async (email, password) => {
+        try {
+            await this.app
+                .auth()
+                .createUserWithEmailAndPassword(email, password);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    logIn = async (email, password) => {
+        try {
+            await this.app
+                .auth()
+                .signInWithEmailAndPassword(email, password);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
+    onAuthStateChanged = async (setUser) => {
+        await this.app.auth().onAuthStateChanged(setUser)
+    }
 }
 
 export default Firebase;
