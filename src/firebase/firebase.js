@@ -18,12 +18,15 @@ class Firebase {
         this.db = this.app.firestore();
     }
     getQuestions = async () => {
-        const snapshot = await this.db.collection('questions').get();
+        const uid = firebase.auth().currentUser.uid;
+        const snapshot = await this.db.collection('questions').doc(uid).collection('questions').get();
+        console.log(snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id})));
         return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id}));
     };
 
     getQuestionsByCategory = async (categoryId) => {
-        const snapshot = await this.db.collection('questions').where("categoryId", "==", categoryId).get();
+        const uid = firebase.auth().currentUser.uid;
+        const snapshot = await this.db.collection('questions').doc(uid).collection('questions').where("categoryId", "==", categoryId).get();
         return snapshot.docs.map(doc => ({ ...doc.data(), id: doc.id}));
     };
 
@@ -33,7 +36,8 @@ class Firebase {
     };
 
     createQuestion = async (word, translations, categoryId) => {
-        await this.db.collection('questions').doc().set({
+        const uid = firebase.auth().currentUser.uid;
+        await this.db.collection('questions').doc(uid).collection('questions').doc().set({
             word,
             translations,
             categoryId,
